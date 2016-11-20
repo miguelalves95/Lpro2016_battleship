@@ -7,6 +7,7 @@ package player_GUI;
 
 import client_bl.*;
 import client_conection.*;
+import static client_conection.Protocol.disconnect;
 
 import javax.swing.*;
 
@@ -206,7 +207,7 @@ public class register extends javax.swing.JFrame {
        }
       else 
            JOptionPane.showMessageDialog(register.this, "The password is different", "Erro in Password ", JOptionPane.ERROR_MESSAGE); 
-       
+       disconnect();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

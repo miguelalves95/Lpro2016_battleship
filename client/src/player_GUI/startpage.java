@@ -6,6 +6,7 @@
 package player_GUI;
 import client_bl.*;
 import client_conection.*;
+import static client_conection.Protocol.disconnect;
 import javax.swing.JOptionPane;
 /**
  *
@@ -191,6 +192,7 @@ public class startpage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(startpage.this, " WRONG PASSWORD ", "ERRO", JOptionPane.ERROR_MESSAGE);
         else
             System.out.println("Aconteceu algo que nao era suposto a fazer o login");
+        disconnect();
         }
         /*
         if ("ERRO_LOGIN".equals(Protocol.sendLogin(user, MD5.crypt(password)))){

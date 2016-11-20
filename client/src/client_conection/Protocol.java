@@ -17,7 +17,9 @@ public class Protocol {
     
    
      //O método connect cria um objecto do tipo Sockets. O construtor estabelece a conexão, alterando-se a variável connected para true
-     
+     public static void  disconnect(){
+        connected = false;
+    }
     
     public static void connect(){
         if (!connected)
