@@ -11,8 +11,7 @@ import client_bl.*;
  */
 public class Protocol {
     
-     String gggggg;
-     private shit; 
+    asdfghjkl;lkjhgfdsasdfghjklTEST
     private static Sockets sc;
     private static boolean connected = false;
     
