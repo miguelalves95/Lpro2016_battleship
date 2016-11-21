@@ -6,7 +6,6 @@
 package player_GUI;
 import client_bl.*;
 import client_conection.*;
-import static client_conection.Protocol.disconnect;
 import javax.swing.JOptionPane;
 /**
  *
@@ -180,20 +179,18 @@ public class startpage extends javax.swing.JFrame {
         else if (user.isEmpty() && password.isEmpty()){
             JOptionPane.showMessageDialog(startpage.this, "field Without Password and login", "login fail", JOptionPane.ERROR_MESSAGE);
            }
-        else{
-        String string=Protocol.sendLogin(user, Criptografia.criptografar(password));
-        if ("LOGIN_WITH_SUCCESS".equals(string)){
+       
+        else if ("LOGIN_WITH_SUCCESS".equals(Protocol.sendLogin(user, Criptografia.criptografar(password)))){
         login s= new login();
         s.setVisible(true);
         JOptionPane.showMessageDialog(startpage.this, " Login With Success ", "Login", JOptionPane.INFORMATION_MESSAGE);
         dispose();
                 }
-        else if("LOGIN_FAIL".equals(string))
+        else if("LOGIN_FAIL".equals(Protocol.sendLogin(user, password)))
             JOptionPane.showMessageDialog(startpage.this, " WRONG PASSWORD ", "ERRO", JOptionPane.ERROR_MESSAGE);
         else
             System.out.println("Aconteceu algo que nao era suposto a fazer o login");
-        disconnect();
-        }
+        
         /*
         if ("ERRO_LOGIN".equals(Protocol.sendLogin(user, MD5.crypt(password)))){
         JOptionPane.showMessageDialog(startpage.this, " field Without user", "login fail", JOptionPane.ERROR_MESSAGE);

@@ -7,7 +7,6 @@ package player_GUI;
 
 import client_bl.*;
 import client_conection.*;
-import static client_conection.Protocol.disconnect;
 
 import javax.swing.*;
 
@@ -178,24 +177,24 @@ public class register extends javax.swing.JFrame {
       first_name=jTextField1.getText();
       last_name=jTextField2.getText();
       email=jTextField3.getText();
-        Player p1= new Player( user,  first_name,  last_name,  password,  email,  rank,  age);
+      
       
       
       
        if( confirmPassword.equals(password)){
         
-    
-      String returns= loginProt.sendResgister(p1);
+      Player p1= new Player( user,  first_name,  last_name,  password,  email,  rank,  age);
       
       
-                    if("registed with sucess".equals(returns)){
+      
+                    if("registed with sucess".equals(loginProt.sendResgister(p1))){
                     JOptionPane.showMessageDialog(register.this, "REGISTED", "REGIST ", JOptionPane.INFORMATION_MESSAGE); 
                     startpage star= new startpage();
                     star.setVisible(true);
                     }
-                     else if ("Is already a registed with this user".equals(returns)){
+                     else if ("Is already a registed with this user".equals(loginProt.sendResgister(p1))){
 
-                        JOptionPane.showMessageDialog(register.this, "ERROR player is already registed", "Erro ", JOptionPane.ERROR_MESSAGE);    
+                        JOptionPane.showMessageDialog(register.this, "ERROR in password", "Erro ", JOptionPane.ERROR_MESSAGE);    
 
 
                      }
@@ -207,7 +206,7 @@ public class register extends javax.swing.JFrame {
        }
       else 
            JOptionPane.showMessageDialog(register.this, "The password is different", "Erro in Password ", JOptionPane.ERROR_MESSAGE); 
-       disconnect();
+       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
