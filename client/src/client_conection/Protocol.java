@@ -11,7 +11,7 @@ import client_bl.*;
  */
 public class Protocol {
     
-asdfghjkjhgfdsadfghj
+asdfghjkjhgfdsadfghjasdfghjkhgfds
     private static Sockets sc;
     private static boolean connected = false;
     
