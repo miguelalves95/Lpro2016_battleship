@@ -10,8 +10,7 @@ import client_bl.*;
  * @author miguel
  */
 public class Protocol {
-    
-asdfghjkjhgfdsadfghjasdfghjkhgfds
+        
     private static Sockets sc;
     private static boolean connected = false;
     
@@ -79,4 +78,24 @@ asdfghjkjhgfdsadfghjasdfghjkhgfds
         return "falhou_a_conexao";
         else return receivedReply;
     }
+    public static String sendBoat1(){
+         connect();
+        String toSend = "Login#"+user+"#"+password;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                           
+        receivedReply = sc.receive();
+        return null;} 
+    
+    public static String sendBoat2(){return null;} 
+    public static String sendBoat3(){return null;} 
+    public static String sendBoat4(){return null;}
+    public static String sendBoat5(){return null;} 
+    public static String shots(){
+        // 
+        
+        return null;} 
+    
+
 }
