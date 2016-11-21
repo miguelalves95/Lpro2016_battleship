@@ -13,7 +13,7 @@ import java.net.*;
  * @author miguel
  */
 public class Sockets {
-    
+    ghgjhg
     private static final int    servicePORT = 1621;
     private static final String HOST = "localhost";
 
