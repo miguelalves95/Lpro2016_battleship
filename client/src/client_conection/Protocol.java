@@ -11,7 +11,7 @@ import client_bl.*;
  */
 public class Protocol {
     
-   
+   putas e vinho verde
     private static Sockets sc;
     private static boolean connected = false;
     
