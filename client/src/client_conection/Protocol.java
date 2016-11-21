@@ -11,7 +11,8 @@ import client_bl.*;
  */
 public class Protocol {
     
-   
+     String gggggg;
+     private shit; 
     private static Sockets sc;
     private static boolean connected = false;
     
@@ -26,7 +27,7 @@ public class Protocol {
             sc = new Sockets();
         connected = true;
         System.out.println("Reception");
-    }
+         }
 
     public static boolean isConnected() {
         return connected;

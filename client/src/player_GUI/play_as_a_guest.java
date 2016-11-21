@@ -97,7 +97,7 @@ public class play_as_a_guest extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         register s= new register();
         s.setVisible(true);
-        dispose();
+       dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
