@@ -78,24 +78,94 @@ public class Protocol {
         return "falhou_a_conexao";
         else return receivedReply;
     }
-    public static String sendBoat1(){
+    public static String sendBoat1(String coordinates1){
          connect();
-        String toSend = "Login#"+user+"#"+password;
+        String toSend = "Boat1#"+lenght+"#"+coordinates1;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                           
+        receivedReply = sc.receive();// you will receive OK or FAILL
+        
+        return null;} 
+    
+
+    public static String sendBoat2(String coordinates1, String coordinates2 ){
+       connect();
+        String toSend = "Boat2#"+lenght+"#"+coordinates1"#"+coordinates2;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                   // you will receive OK or FAILL        
+        receivedReply = sc.receive();  
+
+        
+        
+        
+        return null;} 
+    
+    public static String sendBoat3(String coordinates1, String coordinates2, String coordinates3){
+        connect();
+        String toSend = "Boat3#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                   // you will receive OK or FAILL        
+        receivedReply = sc.receive();
+        
+        
+        
+        return null;} 
+    public static String sendBoat4(String coordinates1, String coordinates2, String coordinates3, String coordinates4){
+        connect();
+        String toSend = "Boat4#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3"#"+coordinates4;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+            // you will receive OK or FAILL               
+        receivedReply = sc.receive();
+        
+        
+        
+        
+        return null;}
+    public static String sendBoat5(String coordinates1, String coordinates2, String coordinates3, String coordinates4, String coordinates5){
+        connect();
+        String toSend = "Boat5#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3"#"+coordinates4"#"+coordinates5;
         String receivedReply;
         System.out.println(toSend);
         sc.send(toSend);
                            
         receivedReply = sc.receive();
-        return null;} 
-    
-    public static String sendBoat2(){return null;} 
-    public static String sendBoat3(){return null;} 
-    public static String sendBoat4(){return null;}
-    public static String sendBoat5(){return null;} 
-    public static String shots(){
-        // 
+        // you will receive OK or FAILL
+        
+        
+        
+        return null;
+    } 
+    public static String doShots(){
+        connect();
+        String toSend = "Shot#"+nºmove+"#"+coordinates;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                           
+        receivedReply = sc.receive();
+        //  send the position of shot
         
         return null;} 
     
+    public static String receiveShots(){
+        connect();
+        String toSend = "LastShot#"+nº Move+"#"+coordinates;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                           
+        receivedReply = sc.receive();
+        // received the position of shot on last move
+        
+        
+        return null;}
 
 }
