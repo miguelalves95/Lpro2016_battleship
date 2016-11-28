@@ -11,7 +11,8 @@ import server_data.PostgreSQLink.*;
 /**
  *
  * @author Miguel
- */
+ */ 
+
 
     public class player_data extends PostgreSQLink{
    
@@ -22,7 +23,10 @@ import server_data.PostgreSQLink.*;
     private String email="";
     private Integer rank=0;
     private Integer age=0; //-> acrescentar a tabela 
-
+/**
+ * PUTAS E VINHO VERDE
+ * @param user 
+ */
     public player_data(String user) {
         this.user = user;
         this.getLine();
