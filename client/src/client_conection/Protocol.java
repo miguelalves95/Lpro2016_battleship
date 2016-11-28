@@ -77,7 +77,7 @@ public class Protocol {
         if("clean".equals(receivedReply))
         return "falhou_a_conexao";
         else return receivedReply;
-    }
+    } /*
     public static String sendBoat1(String coordinates1){
          connect();
         String toSend = "Boat1#"+lenght+"#"+coordinates1;
@@ -167,5 +167,5 @@ public class Protocol {
         
         
         return null;}
-
+*/
 }
