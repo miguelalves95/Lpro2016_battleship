@@ -49,6 +49,7 @@ public class Protocol {
         receivedReply = sc.receive(); 
         System.out.println(receivedReply);
         System.out.append(receivedReply);
+        disconnect();
         if("clean".equals(receivedReply))
         return "falhou_a_conexao";
         else return receivedReply;
@@ -72,6 +73,7 @@ public class Protocol {
         receivedReply = sc.receive(); 
         System.out.println("passou 5");
         System.out.append(receivedReply);
+        disconnect();
         if("ERRO".equals(receivedReply))
             System.out.println(" just erro" );
         if("clean".equals(receivedReply))
