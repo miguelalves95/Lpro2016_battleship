@@ -10,7 +10,7 @@ import java.util.logging.*;
 
 
 /**
- *
+ * Class that is responsible for helding the session with database.
  * @author miguel
  */
 public class PostgreSQLink { 
@@ -31,8 +31,8 @@ public class PostgreSQLink {
     }
     
     /**
-     * vê se está conectado.
-     * Caso nao esteja, inicia a conecçao, se conseguir fica a true a boleana connected, senao dá o valor de falso 
+     * See if it is connected.
+     * If it is not, start the connection, if it is true the boolean connected, but gives the value of false 
      */
     void connect (){
         try {
@@ -43,7 +43,7 @@ public class PostgreSQLink {
 
         try {
             if (connected==false)
-                connection = DriverManager.getConnection( "jdbc:postgresql://dbm.fe.up.pt/lpro1621", "lpro1621", "I!3716mwd");
+                connection = DriverManager.getConnection("jdbc:postgresql://dbm.fe.up.pt/lpro1621", "lpro1621", "I!3716mwd");
             connected = true;
         } catch (SQLException ex) {
             System.out.println("erro no postgree server");
@@ -53,8 +53,8 @@ public class PostgreSQLink {
     }
     
     /**
-     * Tenta derminar a coneccao a base de dados correctamente
-     * Atribui o valor de false a variavel connected
+     * Try to clear the database connection correctly
+     * Assigns the value of false to connected variable
      */
     void close(){
         connected = false;

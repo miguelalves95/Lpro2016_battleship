@@ -19,15 +19,15 @@ public class MultiServer {
       boolean listening = true;
  
       try {
-         serverSocket = new ServerSocket(1621);
+         serverSocket = new ServerSocket(1032);
       } catch (IOException e) {
-         System.err.println("Could not listen on port: 1621.");
+         System.err.println("Could not listen on port: 1032.");
          System.exit(-1);
       }
  
       while (listening){
       new MultiServerThread(serverSocket.accept()).start();
-       System.out.println("merdadaaaaaaaaaaaaaaaaaa");
+     
       
       }
       

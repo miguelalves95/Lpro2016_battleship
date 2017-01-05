@@ -4,9 +4,17 @@
  * and open the template in the editor.
  */
 package player_GUI;
+import client_bl.*;
+import client_conection.*;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -19,11 +27,23 @@ public class boardTrt extends javax.swing.JFrame {
    // private Client client = null;
 
    public JButton[][] buttons = new JButton[10][10];
+   public JButton[][] buttons2 = new JButton[10][10];
    private JPanel[][] panels = new JPanel[10][10];
    private Integer[][] buttonsInt = new Integer[18][18];
+   private String stringOfboats = "";
+   private Boolean MyTurn = false;
+   
+   private String playerNumber;
+   private String playerNumber1 = "player1";
    
    private Integer previousX = 0;
    private Integer previousY = 0;
+   
+    private Boolean unoFinished = false;
+     private Boolean dosFinished = false;
+      private Boolean tresFinished = false;
+       private Boolean quartoFinished = false;
+        private Boolean cincoFinished = false;
                                              
     private Boolean firstFinished = false;
     private Boolean secondFinished = false;
@@ -39,13 +59,15 @@ public class boardTrt extends javax.swing.JFrame {
     private Boolean shootPossible = false;
     private Boolean clientStarted = false;
     /**
-     * Creates new form boardTrt
+     * Creates new form boardTrt, constructor of the class.
      */
     public boardTrt() {
         this.getContentPane().removeAll();
         initComponents();
         setSize(1200,600);
         setLocationRelativeTo(null);
+        jButton4.setEnabled(false);
+            this.jButton4.setBackground(Color.red);
         for(int x=0;x<18;x++){
             for(int y=0;y<18;y++){
                 if((x>3 && x<14) && (y>3 && y<14)){
@@ -75,7 +97,7 @@ public class boardTrt extends javax.swing.JFrame {
             }
         }
         
-        for(int x=0;x<10;x++){
+        /*for(int x=0;x<10;x++){
             for(int y=0;y<10;y++){
                
                 panels[x][y] = new javax.swing.JPanel();
@@ -84,64 +106,18 @@ public class boardTrt extends javax.swing.JFrame {
 
                 jPanel3.add(panels[x][y]);
             }
-        }
-        
-       // initialize();
-
+        }*/
+      
     }
     
-      private void fifthPartOfShip(Integer x, Integer y){
-         
-           x= x+4;
-        y= y+4;
-          
-         if(buttonsInt[x][y] == 0){
-             if(vertical == true){
-             
-             if((previousX+1 == x && previousY == y) || (previousX-4 == x && previousY == y)){
-            buttonsInt[x][y] = 2;
-           buttons[x-4][y-4].setBackground(Color.orange);
-            previousX = x;
-            previousY = y;
-            fifthFinished = true;
-         } else{
-        if((previousX-1 == x && previousY == y) || (previousX+4 == x && previousY == y)){
-            buttonsInt[x][y] = 2;
-           buttons[x-4][y-4].setBackground(Color.orange);
-            previousX = x;
-            previousY = y;
-           fifthFinished = true;
-         }else{}}} if(horizontal == true){
-       
-        if((previousX == x && previousY+1 == y) || (previousX == x && previousY-4 == y)){
-            buttonsInt[x][y] = 2;
-            buttons[x-4][y-4].setBackground(Color.orange);
-            previousX = x;
-            previousY = y;
-            
-           fifthFinished = true;
-         }else{
-         if((previousX == x && previousY-1 == y) || (previousX == x && previousY+4 == y)){
-            buttonsInt[x][y] = 2;
-            buttons[x-4][y-4].setBackground(Color.orange);
-            previousX = x;
-            previousY = y;
-            fifthFinished = true;
-                         }else{
-         
-                        }   
-                    }
-                } 
-         else{
-             
-         }
-          
-     }}private String getID() { //jesli pierwszy return server jesli drugi return client
-		return  "ID_CLIENT" ;//: "ID_SERVER";
-	}
     
     
-     private void fourthPartOfShip(Integer x, Integer y){
+    /**
+     * Enable to put the 4th part of the boat on the board if the logic of the game validates.
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+     private void fourthPartOf2Ship(Integer x, Integer y){
          
           x= x+4;
           y= y+4;
@@ -194,8 +170,14 @@ public class boardTrt extends javax.swing.JFrame {
          }
          } 
      }}
+     
+     /**
+      * Enable to put the 3th part of the boat on the board if the logic of the game validates.
+      * @param x x coordinate 
+      * @param y y coordinate
+      */
     
-     private void thirdPartOfShip(Integer x, Integer y){
+     private void thirdPartOf2Ship(Integer x, Integer y){
          
           x= x+4;
           y= y+4;
@@ -261,8 +243,120 @@ public class boardTrt extends javax.swing.JFrame {
          }
          }
      }}
+     /**
+      * Enable to put the 5th part of the boat on the board if the logic of the game validates.
+      * @param x x coordiante
+      * @param y y coordinate
+      */
+     private void fifthPartOfShip(Integer x, Integer y){
+         x= x+4;
+      y= y+4;
+      
+       if(buttonsInt[x][y]==0){
+          if(horizontal){
+              if(previousY == y){
+          if(previousX == x+1 || previousX == x-1 || previousX == x-4 || previousX == x+4   ){
+                  putBoat1(x,y);
+                  fifthFinished = true;   
+              }}else{}
+          }else{
+              if(previousX == x){
+           if(previousY == y+1 || previousY == y-1 || previousY == y-4 || previousY == y+4  ){
+                   putBoat1(x,y);
+                   fifthFinished = true;
+              }}else{}
+          } 
+      }else{}
+     }
+     /**
+      * Enable to put the 4th part of the boat on the board if the logic of the game validates.
+      * @param x x coordinate
+      * @param y y coordinate
+      */
+     private void fourthPartOfShip(Integer x, Integer y){
+            x= x+4;
+      y= y+4;
+      
+ if(buttonsInt[x][y]==0){
+          if(horizontal){
+              if(previousY == y){
+          if(previousX == x+1 || previousX == x-1 || previousX == x-3 || previousX == x+3   ){
+                  putBoat1(x,y);
+                  fourthFinished = true;   
+              }}else{}
+          }else{
+              if(previousX == x){
+           if(previousY == y+1 || previousY == y-1 || previousY == y-3 || previousY == y+3  ){
+                   putBoat1(x,y);
+                   fourthFinished = true;
+              }}else{}
+          }
+          
+        
+          
+          
+      }else{}
+     }
+     /**
+      * Enable to put the 3th part of the boat on the board if the logic of the game validates.
+      * @param x x coordinate
+      * @param y y coordinate
+      */
+     private void thirdPartOfShip(Integer x, Integer y){
+       x= x+4;
+      y= y+4;
+      
+      if(buttonsInt[x][y]==0){
+          if(horizontal){
+              if(previousY == y){
+          if(previousX == x+1 || previousX == x-1 || previousX == x-2 || previousX == x+2   ){
+                  putBoat1(x,y);
+                  thirdFinished = true;   
+              }}else{}
+          }else{
+              if(previousX == x){
+           if(previousY == y+1 || previousY == y-1 || previousY == y-2 || previousY == y+2 ){
+                   putBoat1(x,y);
+                   thirdFinished = true;
+              }}else{}
+          }       
+      }else{}
+      
+     }
+     /**
+      * Enable to put the 2nd part of the boat on the board if the logic of the game validates.
+      * @param x x coordinate
+      * @param y y coordinate
+      */
+      private void secondPartOfShip(Integer x, Integer y){
+      x= x+4;
+      y= y+4;
+      
+      if(buttonsInt[x][y]==0){
+          if(previousY == y){
+              if(previousX == x+1 || previousX == x-1 ){
+                  putBoat1(x,y);
+                  secondFinished = true;
+                   horizontal = true;
+                  
+              }
+          }else if (previousX == x){
+              if(previousY == y+1 || previousY == y-1 ){
+                   putBoat1(x,y);
+                   secondFinished = true;
+                   vertical = true;
+              }
+          }else{}
+      }else{}
+      
+      }
      
-     private void secondPartOfShip(Integer x, Integer y){
+     /**
+      * Enable to put the 2nd part of the boat on the board if the logic of the game validates.
+      * @param x x coordinate
+      * @param y y coordinate
+      */
+     private void secondPartOf2Ship(Integer x, Integer y){
         x= x+4;
         y= y+4;
          
@@ -316,146 +410,66 @@ public class boardTrt extends javax.swing.JFrame {
         }
      }
     
-    private void firstPartOfShip(Integer x, Integer y){
-        x= x+4;
-        y= y+4;
+     
+     
+   
+    /**
+     * Put the boat on the board, make a picture of the boat on the right place in the board
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    private void putBoat1(Integer x, Integer y){
+         
+         buttonsInt[x][y] = 1;
+         System.out.println("teraz"+x+y);
+          System.out.println("poprzedniX"+previousX);
+         System.out.println("poprzdniY"+previousY);
+         previousX = x;
         
-        if(buttonsInt[x+4][y] != 0 &&     //1kierunek
-                 buttonsInt[x-4][y] != 0      &&            // 2kierunek
-                  buttonsInt[x][y+4] != 0       &&            //3kierunek
-                   buttonsInt[x][y-4] != 0                  //4kierunek
-                ){
-        System.out.println("jakas lipa");
-        }else{ 
-            if(x-4 == 9 || x-4 == 0 || y-4 == 9 || y-4 == 0){
-               
-                if(x-4 == 9){
-                    if(y-4 == 0){
-                        if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y+1] == 0){
-                        buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                        }else{
-                        System.out.print("jakas lipa2");
-                        }
-                    }else{ 
-                        if(y-4 == 9){
-                            if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y-1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                            }else{
-                             System.out.println("jakas lipa4");
-                            }
-                        }else{ // yrandomowe
-                              if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y-1] == 0
-                                      && buttonsInt[x][y+1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                            }else{
-                             System.out.println("zajete i chuj");
-                            }
-                        }
-                    }
-                }
-                else{ //iks nie jest 9
-                    if(x-4 == 0){  
-                    
-                          if(y-4 == 0){
-                        if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y+1] == 0){
-                        buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                        }else{
-                        System.out.print("jakas lipa2");
-                        }
-                    }else{ 
-                        if(y-4 == 9){
-                            if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y-1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                            }else{
-                             System.out.println("jakas lipa4");
-                            }
-                        }else{ // yrandomowe
-                              if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y-1] == 0
-                                      && buttonsInt[x][y+1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                            }else{
-                             System.out.println("zajete i chuj");
-                            }
-                        }
-                    }
-                  
-                    }else{//x nie jest ani 0 ani 9
-                        if(y-4 == 9){
-                             if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0
-                                      && buttonsInt[x][y-1] == 0){
-                              buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                             }else{
-                             
-                             }
-                        }else{// y nie jest 9
-                            if(y-4 == 0){
-                                if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0
-                                      && buttonsInt[x][y+1] == 0){
-                                 buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                                }else{
-                                }
-                             }else{ 
-                        System.out.println("nie powinno tu dojsc");
-                            }
-                        }
-                    }
-                }  
-            }else{    
-                 if(buttonsInt[x+4][y] != 0 &&     //1kierunek
-                 buttonsInt[x-4][y] != 0      &&            // 2kierunek78
-                  buttonsInt[x][y+4] != 0       &&            //3kierunek
-                   buttonsInt[x][y-4] != 0                  //4kierunek
-                ){
-        System.out.println("jakas lipa");
-        }else{ 
-                 if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y+1]  == 0 
-                && buttonsInt[x][y-1] == 0){
-                buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
-                firstFinished = true;
-                }else{
-                //pole zajete
-                }
-            }
-            }
-        }
-    }
-        
-       private void firstPartOfSecondShip(Integer x, Integer y){
+         previousY = y;
+         ImageIcon icon = new ImageIcon(
+    getClass().getResource(
+    "resources/boat1.png"));
+         
+        x= x-4;
+        y= y-4;
+         if(unoFinished == false){
+          icon = new ImageIcon(
+    getClass().getResource(
+    "resources/boat1.png"));
+         }else if(dosFinished == false){
+          icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_zolta.jpg"));
+         }else if(tresFinished == false){
+      icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_biala.jpg"));
+         }else if (quartoFinished == false){
+         icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_zolta.jpg"));
+         }else if(cincoFinished == false){
+        icon = new ImageIcon(
+    getClass().getResource(
+    "resources/boat1.png"));
+         }
+          
+          
+     buttons[x][y].setBackground(Color.blue);
+     buttons[x][y].setIcon(icon);
+     buttons[x][y].setDisabledIcon(icon);
+     
+    
+     }
+    
+       
+        /**
+         * Enable to put the 1st part of the boat on the board if the logic of the game validates.
+         * @param x x coordinate
+         * @param y y coordinate
+         */
+       private void firstPartOfShip(Integer x, Integer y){
         x= x+4;
         y= y+4;
         
@@ -470,10 +484,7 @@ public class boardTrt extends javax.swing.JFrame {
                 if(x-4 == 9){
                     if(y-4 == 0){
                         if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y+1] == 0){
-                        buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                         putBoat1(x,y);
                 firstFinished = true;
                         }else{
                         System.out.print("jakas lipa2");
@@ -481,10 +492,8 @@ public class boardTrt extends javax.swing.JFrame {
                     }else{ 
                         if(y-4 == 9){
                             if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y-1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                            
+                 putBoat1(x,y);
                 firstFinished = true;
                             }else{
                              System.out.println("jakas lipa4");
@@ -492,10 +501,7 @@ public class boardTrt extends javax.swing.JFrame {
                         }else{ // yrandomowe
                               if(buttonsInt[x][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y-1] == 0
                                       && buttonsInt[x][y+1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                             putBoat1(x,y);
                 firstFinished = true;
                             }else{
                              System.out.println("zajete i chuj");
@@ -508,10 +514,7 @@ public class boardTrt extends javax.swing.JFrame {
                     
                           if(y-4 == 0){
                         if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y+1] == 0){
-                        buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                        putBoat1(x,y);
                 firstFinished = true;
                         }else{
                         System.out.print("jakas lipa2");
@@ -519,10 +522,7 @@ public class boardTrt extends javax.swing.JFrame {
                     }else{ 
                         if(y-4 == 9){
                             if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y-1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                            putBoat1(x,y);
                 firstFinished = true;
                             }else{
                              System.out.println("jakas lipa4");
@@ -530,25 +530,18 @@ public class boardTrt extends javax.swing.JFrame {
                         }else{ // yrandomowe
                               if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x][y-1] == 0
                                       && buttonsInt[x][y+1] == 0){
-                             buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                             putBoat1(x,y);
                 firstFinished = true;
                             }else{
                              System.out.println("zajete i chuj");
                             }
                         }
                     }
-                  
                     }else{//x nie jest ani 0 ani 9
                         if(y-4 == 9){
                              if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0
                                       && buttonsInt[x][y-1] == 0){
-                              buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                               putBoat1(x,y);
                 firstFinished = true;
                              }else{
                              
@@ -557,10 +550,7 @@ public class boardTrt extends javax.swing.JFrame {
                             if(y-4 == 0){
                                 if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0
                                       && buttonsInt[x][y+1] == 0){
-                                 buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                                 putBoat1(x,y);
                 firstFinished = true;
                                 }else{
                                 }
@@ -578,12 +568,9 @@ public class boardTrt extends javax.swing.JFrame {
                 ){
         System.out.println("jakas lipa");
         }else{ 
-                 if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y+1]  == 0 
+                if(buttonsInt[x][y] == 0 && buttonsInt[x+1][y] == 0 && buttonsInt[x-1][y] == 0 && buttonsInt[x][y+1]  == 0 
                 && buttonsInt[x][y-1] == 0){
-                buttonsInt[x][y] = 1;
-                buttons[x-4][y-4].setBackground(Color.red);
-                previousX = x;
-                previousY = y;
+                 putBoat1(x,y);
                 firstFinished = true;
                 }else{
                 //pole zajete
@@ -592,15 +579,37 @@ public class boardTrt extends javax.swing.JFrame {
             }
         }
     }    
+
     
     
-    private void funkcjaTakaSamaDlaWszystkichGuzikowTylkoZabierzXY(java.awt.event.ActionEvent evt, Integer x, Integer y){
-        System.out.println(x);
-        System.out.println("dabadaba");
-        buttons[7][7].setBackground(Color.black);
+      /**
+       * Get player ID
+       * @return the id of player
+       */
+      public String getID() { //jesli pierwszy return server jesli drugi return client
+	if(playerNumber1 == "player1")	{
+            return   "ID_SERVER";
+            
+        }else{
+          return  "ID_CLIENT" ;//: "ID_SERVER";}
+	}
+    
+      }
+  
         
+     
+    private BufferedImage image;
+    /**
+     * The function of the buttons on the board being clicked. Set the boats and do the shoot if possible.
+     * @param evt event of button clicked
+     * @param x x coordinate
+     * @param y y coordinate
+     */
+    private void funkcjaTakaSamaDlaWszystkichGuzikowTylkoZabierzXY(java.awt.event.ActionEvent evt, Integer x, Integer y){
+     
+        if(unoFinished == false){
+            
         if(firstFinished == false){
-            buttons[x][y].setBackground(Color.DARK_GRAY);
          firstPartOfShip(x,y);
         }
         else if(secondFinished == false){
@@ -611,10 +620,137 @@ public class boardTrt extends javax.swing.JFrame {
             fourthPartOfShip(x,y);
         }else if(fifthFinished == false){
         fifthPartOfShip(x,y);
-        }else{
+        unoFinished = true;
+        firstFinished = false;
+        secondFinished = false;
+        thirdFinished = false;
+        fourthFinished = false;
+        fifthFinished = false;
+         vertical = false;
+    horizontal = false;
+        
         }
-        if(shootPossible == true){
+        
+        }else if(dosFinished == false){
+            
+        if(firstFinished == false){
+         firstPartOfShip(x,y);
+        }
+        else if(secondFinished == false){
+            secondPartOfShip(x,y);
+        }else if(thirdFinished == false){
+           thirdPartOfShip(x,y);
+        }else if(fourthFinished == false){
+            fourthPartOfShip(x,y);
+        dosFinished = true;
+        firstFinished = false;
+        secondFinished = false;
+        thirdFinished = false;
+        fourthFinished = false;
+        fifthFinished = false;
+         vertical = false;
+    horizontal = false;
+        }
+            
+    }else if(tresFinished == false){
+        
+        if(firstFinished == false){
+         firstPartOfShip(x,y);
+        }
+        else if(secondFinished == false){
+            secondPartOfShip(x,y);
+        }else if(thirdFinished == false){
+           thirdPartOfShip(x,y);
+            tresFinished = true; firstFinished = false;
+        secondFinished = false;
+        thirdFinished = false;
+        fourthFinished = false;
+        fifthFinished = false;
+         vertical = false;
+    horizontal = false;
+            
+        }
+        
+    }else if(quartoFinished == false){
+        
+        if(firstFinished == false){
+         firstPartOfShip(x,y);
+        }
+        else if(secondFinished == false){
+            secondPartOfShip(x,y);
+            quartoFinished = true;
+             firstFinished = false;
+        secondFinished = false;
+        thirdFinished = false;
+        fourthFinished = false;
+        fifthFinished = false;
+         vertical = false;
+         horizontal = false;
+        }
+        
+    }else if(cincoFinished == false){
+        if(firstFinished == false){
+         firstPartOfShip(x,y);
+         cincoFinished = true;
+         shootPossible = true;
+         
+         cleanAll();
+         disableAll();
+         jButton4.setEnabled(true);
+         this.jButton4.setBackground(Color.green);
+         jLabel2.setText("Your board");
+         jLabel1.setText("Opponents board, let's shoot!");
+         
+         for(int f=0;f<10;f++){
+            for(int h=0;h<10;h++){
+               
+                buttons2[f][h] = new javax.swing.JButton("");
+                Integer iks = f;
+                Integer ygreg = h;
+                jPanel3.add(buttons2[f][h]);
+                if(buttonsInt[f+4][h+4] != 0){
+                buttons2[f][h].setBackground(Color.blue);
+                stringOfboats = stringOfboats + f + h +"@" ;
+                }else{
+                
+                }
+            }
+        }
+         
+        }
+        
+          
+    }else{
+     if(shootPossible == true){
+            if(Protocol.shoot(playerNumber,x,y) == true){
+                buttons[x][y].setBackground(Color.red);
+                zmienStatus("Shooted!");
+                status.setBackground(Color.GREEN);
+                  ImageIcon icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_zolta_2.jpg"));
+        
+                this.buttons[x][y].setIcon(icon);
+                this.buttons[x][y].setDisabledIcon(icon);
+            }else{
+            buttons[x][y].setBackground(Color.blue);
+            zmienStatus("Missed");
+              ImageIcon icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_zolta_3.jpg"));
+        
+                this.buttons[x][y].setIcon(icon);
+                this.buttons[x][y].setDisabledIcon(icon);
+            status.setBackground(Color.RED);
+            }
+            MyTurn = false;  
+            shootPossible = false;
         }else{}
+    
+    }
+         
+       
+
      }
 
     /**
@@ -666,127 +802,64 @@ public class boardTrt extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(234, 234, 234)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 530, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(288, 288, 288))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(57, 57, 57))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jButton4)
+                .addContainerGap(554, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jButton4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(48, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addComponent(jButton4)))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+ * Function of start game button. Begin the game againt the opponent
+ * @param evt click button event
+ */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-      
-     this.getContentPane().removeAll();
-        initComponents();
-        setSize(1200,600);
-        setLocationRelativeTo(null);
-        for(int x=0;x<18;x++){
-            for(int y=0;y<18;y++){
-                if((x>3 && x<14) && (y>3 && y<14)){
-                buttonsInt[x][y] = 0;
-                System.out.print(buttonsInt[x][y]);
-                }else{
-                buttonsInt[x][y] = 1;
-                System.out.print(buttonsInt[x][y]);
-                }
-            }
-            System.out.println("");
-           
-        }
-        
-        for(int x=0;x<10;x++){
-            for(int y=0;y<10;y++){
-               
-                buttons[x][y] = new javax.swing.JButton("");
-                Integer iks = x;
-                Integer ygreg = y;
-                buttons[x][y].addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                funkcjaTakaSamaDlaWszystkichGuzikowTylkoZabierzXY(evt, iks, ygreg);
-            }
-        });
-                jPanel2.add(buttons[x][y]);
-            }
-        }
-        
-        for(int x=0;x<10;x++){
-            for(int y=0;y<10;y++){
-               
-                panels[x][y] = new javax.swing.JPanel();
-                Integer iks = x;
-                Integer ygreg = y;
-
-                jPanel3.add(panels[x][y]);
-            }
-        }
-      
+      zmienStatus("waiting for opponent");
+    Protocol gameProt= new Protocol();
+    if("Connected1".equals(Protocol.sendUserToGame("user1","lipa"))){
+    System.out.print("uzytkownik numer 1");
+    this.playerNumber = "player1";
+    }else{
+        this.playerNumber = "player2";
+    System.out.print("uzytkowbnik numerr 2");
+    }  
+    
+    System.out.println(stringOfboats);
+         Protocol.sendBoard(playerNumber,stringOfboats);
+    
         getStart();
-        /*
-        boardTrt ui = this;
-
-        new Thread(){
-            @Override
-            public void run(){
-                ui.disableAll();
-                //Boolean orientation;
-                //Position startingPoint;
-                String wordToPlace; //place to shoot
-                Tile[] tilesToShuffle;
-                Boolean tmp;
-
-                //orientation = ui.jRadioButton2.isSelected();
-
-                Integer row = ui.boardTable.getSelectedRow();
-                Integer col = ui.boardTable.getSelectedColumn();
-                startingPoint = (Position)ui.boardTable.getModel().getValueAt(row, col);
-
-                wordToPlace = ui.jTextField1.getText();
-
-                tilesToShuffle = null;
-
-                tmp = ui.play.submeter(orientation, startingPoint, wordToPlace, tilesToShuffle);
-
-                if (!tmp){
-                    JOptionPane.showMessageDialog(null, "Jogada inválida, tente outra vez!");
-                    ui.enableAll();
-                }
-            }
-        }.start();*/
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -841,69 +914,111 @@ public class boardTrt extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea status;
     // End of variables declaration//GEN-END:variables
-
+/**
+ * Disable all buttons while waiting for your turn
+ */
 private void disableAll(){
         
-        for(int x=0;x<18;x++){
-            for(int y=0;y<18;y++){
+        for(int x=0;x<10;x++){
+            for(int y=0;y<10;y++){
                 this.buttons[x][y].setEnabled(false);
-                jButton4.setEnabled(false);
             }
+           
+            jButton4.setEnabled(false);
+            this.jButton4.setBackground(Color.red);
+    }
+}
+/**
+ * Enable all buttons.
+ */
+private void enableAll(){
+        
+        for(int x=0;x<10;x++){
+            for(int y=0;y<10;y++){
+                this.buttons[x][y].setEnabled(true);
+            }
+           
+           
+            
     }
 }
 
-private enum RodzajWiadomosci {
-		WIADOMOSC_POZYTYWNA, WIADOMOSC_NEUTRALNA, WIADOMOSC_NEGATYWNA
-	}
-/*public boolean sendMessage(GameEvent ge) {
-		if (client != null && client.isAlive()) {
-			ge.setPlayerId(getID());
-			client.sendMessage(ge);
-			return true;
-		} else {
-			return false;
-		}
-	}*/
 
+
+/**
+ * Start the main thread of the game.
+ */
 private void getStart() {
    //create new game
-		
-						
-		} 
-					
-				
-			
-		
+   //threaddisableAll()
+                disableAll();
+                
+             new Thread(){
+            @Override
+            public void run(){
+               
+		while(true){
+                    
+                    
+                        
+                           
+                            if("player1".equals(Protocol.checkMyTurn(playerNumber)) == true){
+                                MyTurn = true;
+                                shootPossible = true;
+                                enableAll();
+                                zmienStatus("It is your turn!");
+                                status.setBackground(Color.green);
+                                 System.out.println(" moja kolej");
+                                 
+                                 
+                             }else{
+                                disableAll();
+                                System.out.println("innakolej");
+                                shootPossible = false;
+                                zmienStatus("Wait for your turn");
+                                status.setBackground(Color.yellow);
+                            }   
+                             try {
+                             Thread.sleep(20*10);
+                                } catch(InterruptedException e) {
+                                }
+                       
+                      
+                }
+               
+
+            }
+        }.start();
+        } 
 	
-	
-private void zmienStatus(String wiadomosc, RodzajWiadomosci rodzaj) {
-		Color color;
-		if (rodzaj == RodzajWiadomosci.WIADOMOSC_POZYTYWNA)
-			color = new Color(196, 255, 196);
-		else if (rodzaj == RodzajWiadomosci.WIADOMOSC_NEGATYWNA)
-			color = new Color(255, 196, 196);
-		else
-			color = new Color(255, 255, 196);
-		status.setBackground(color);
+	/**
+         * Change the message in the message window.
+         * @param wiadomosc 
+         */
+private void zmienStatus(String wiadomosc) {
+		
+		status.setBackground(Color.yellow);
 		status.setText("");
 		status.append(wiadomosc);
 	}
-
-private void initialize() {
-	
-		new Thread() {
-			@Override
-			public void run() {
-				while (true) {
-						processMessages();
-					 
-				}
-			}
-		}.start();
-	}
-
-private void processMessages() {
-		//if client receive message =! null
-	}
+/**
+ * Clean all buttons to prepeare the game to shot.
+ */
+    private void cleanAll() {
+        ImageIcon icon = new ImageIcon(
+    getClass().getResource(
+    "resources/lodka_zolta_1.jpg"));
+        
+        
+       for(int x=0;x<10;x++){
+            for(int y=0;y<10;y++){
+                this.buttons[x][y].setEnabled(true);
+                this.buttons[x][y].setBackground(Color.blue);
+                
+                this.buttons[x][y].setIcon(icon);
+                this.buttons[x][y].setDisabledIcon(icon);
+            }
+    }
+    }
 
 }

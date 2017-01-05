@@ -9,19 +9,21 @@ import java.io.*;
 import java.net.*;
 
 /**
- *
+ *The class of sockets.
  * @author miguel
  */
 public class Sockets {
     
-    private static final int    servicePORT = 1621;
+    private static final int    servicePORT = 1032;
     private static final String HOST = "localhost";
 
    
     private Socket sockClient;
     private BufferedReader in;
     private PrintWriter out;  
-
+/**
+ * Constructor of the class.
+ */
     public Sockets(){
             try{
                     sockClient = new Socket(HOST, servicePORT);
@@ -33,21 +35,27 @@ public class Sockets {
             }               
     }
 
-
+/**
+ * Send the message to server.
+ * @param mensagem message to the server
+ */
     public void send(String mensagem){
         System.out.println("teste send socket client");
            out.println(mensagem);
     }
-
+/**
+ * Receive the message from the server
+ * @return the received message
+ */
     public String receive(){
         String data_out = null;
         try {       
-            System.out.println(data_out + "antes de receber"); 
+            
            data_out = in.readLine();
             System.out.println(data_out); 
      
         } catch (IOException ex){
-          System.out.println("Erro na receive do sockets client");
+          System.out.println("Error to receive");
         }
 
         return data_out;

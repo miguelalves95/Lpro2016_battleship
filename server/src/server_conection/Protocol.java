@@ -14,18 +14,16 @@ import java.sql.*;
 
 
 /**
- *
+ * The class protocol of server connection.
  * @author miguel
  */
 public class Protocol {
      
-    /**
-     *O método receiveLogin recebe uma string do cliente através do método receive.
-     *Depois divide essa string em tokens de modo a interpretar os diferentes campos da
-     * mesma. Retorna o username e a password recebidos.
-     */
-    
-    
+/**
+ * In case of received request calls different methods of the class and return the message from the result. If an error occurs retur null.
+ * @param toReceive request from client
+ * @return the answer from protocol, different for every case
+ */
     public String protReceive(String toReceive)
     {    System.out.println(toReceive);
         
@@ -37,12 +35,117 @@ public class Protocol {
             String string = receiveRegister(stringTokens);
             System.out.println(string  +"protreceive sistem ");
             return string;}
-        else return "string";
-    
+        else if(stringTokens[0].equals("StartGame")){
+         String string = receiveStartGame(stringTokens);
+            System.out.println(string  +"taka to odpowiedz");
+            return string;
+        }else if(stringTokens[0].equals("Turn")){
+       System.out.println("sprawdzm czyja kolej");
+                 String string =  receiveTurn(stringTokens);
+            System.out.println(string  +"whse turn ");
+            return string;
+        }else if(stringTokens[0].equals("Shoot")){
+         System.out.println("sprawdzm czyja shoot kolej");
+                 String string =  receiveShot(stringTokens);
+            System.out.println(string  +"szot! ");
+            return string;
+        }else if(stringTokens[0].equals("Board")){
+         String string =  receiveBoard(stringTokens);
+            System.out.println(string  +"board! ");
+            return string;
+        }else
+            return "string";
 	}
-    
-    
-   
+    /**
+     * Creating the connection between an user and the game. The game consist always of two users. 
+     * @param stringTokens message received from client include username
+     * @return the order of appear in the game
+     */
+      public String receiveStartGame(String[] stringTokens){
+          /////////////
+      //Game ga1me = new Game();
+        Player player = new Player(stringTokens[1],stringTokens[2]);
+        System.out.println("tokenyy");
+        System.out.println(stringTokens[1]);
+        System.out.println(stringTokens[2]);
+       ///////////////
+      
+        if (Game.getObject().noPlayers(stringTokens[1]) == true)
+        return "Connected1";
+        else
+        return "Connected2";
+          ////////////     
+    }
+      /**
+       * The method to handle the shot, checking if the shot is missed or correct
+       * @param stringTokens message received from client include username and coordinates of shot
+       * @return the YES/NO message meaning shooted/missed
+       */
+        public String receiveShot(String[] stringTokens){
+          /////////////
+      //Game ga1me = new Game();
+        Player player = new Player(stringTokens[1],stringTokens[2]);
+        System.out.println("receiveShot");
+        System.out.println(stringTokens[1]);
+        System.out.println(stringTokens[2]);
+       ///////////////
+      
+        if (Game.getObject().shot(stringTokens[2]) == true){
+            System.out.println("TRAF");
+        return "YES";}
+        else{
+             System.out.println("PUDLO");
+        return "NO";}
+          ////////////     
+    }
+      
+      /**
+       * The method to set the board of an user on server. 
+       * @param stringTokens message received from client include username and coordinates of ships
+       * @return message of user that created the Board 
+       */
+         public String receiveBoard(String[] stringTokens){
+          /////////////
+      //Game ga1me = new Game();
+        Player player = new Player(stringTokens[1],stringTokens[2]);
+        System.out.println("taka plansza");
+        System.out.println(stringTokens[1]);
+        System.out.println(stringTokens[2]);
+       ///////////////
+      
+        if (Game.getObject().setBoard(stringTokens[1],stringTokens[2]) == true){
+            System.out.println("dzialam");
+        return "player1";}
+        else
+        return "player2";
+          ////////////     
+    }
+        /**
+         * Checking whose turn it is.
+         * @param stringTokens message received from client include username
+         * @return the information about the turn, return the name of the player that turn it is.
+         */
+       public String receiveTurn(String[] stringTokens){
+          /////////////
+      //Game ga1me = new Game();
+        Player player = new Player(stringTokens[1],stringTokens[2]);
+        System.out.println("tokenkjjjjhyy");
+        System.out.println(stringTokens[1]);
+        System.out.println(stringTokens[2]);
+       ///////////////
+      
+        if (Game.getObject().myTurn(stringTokens[1]) == true){
+            System.out.println("dzialam");
+        return "player1";}
+        else
+        return "player2";
+          ////////////     
+    }
+   /**
+    * Method to log in the user. Checking if the password is correct.
+    * @param stringTokens message received from client include username and password
+    * @return string to inform if the login was successfull
+    */
     public String receiveLogin(String[] stringTokens){
         Player player = new Player(stringTokens[1],stringTokens[2]);
         System.out.println(stringTokens[1]);
@@ -55,7 +158,11 @@ public class Protocol {
         return "LOGIN_FAIL";
                
     }
-     
+     /**
+      * Method to register an user.
+      * @param stringTokens message received from client include all information about user, username, first name, last name, password, age
+      * @return an information of successfull registration
+      */
      public String receiveRegister(String[] stringTokens){
          
          String rt;

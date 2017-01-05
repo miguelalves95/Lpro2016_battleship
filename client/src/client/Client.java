@@ -6,12 +6,13 @@
 package client;
 import player_GUI.*;
 /**
- *
+ *The main class of the project.
  * @author miguel
  */
 public class Client {
 
     /**
+     * The main function of the class
      * @param args the command line arguments
      */
     public static void main(String[] args) {

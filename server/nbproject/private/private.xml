@@ -6,8 +6,10 @@
             <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_conection/MultiServerThread.java</file>
             <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_conection/Protocol.java</file>
             <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_data/player_data.java</file>
+            <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_data/PostgreSQLink.java</file>
             <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_conection/MultiServer.java</file>
             <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_bl/Player.java</file>
+            <file>file:/C:/Users/Miguel/Documents/GitHub/Lpro2016_battleship/server/src/server_bl/Game.java</file>
         </group>
     </open-files>
 </project-private>

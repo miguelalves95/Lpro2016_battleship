@@ -6,6 +6,9 @@
 package player_GUI;
 import client_bl.*;
 import client_conection.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
@@ -181,7 +184,12 @@ public class startpage extends javax.swing.JFrame {
            }
        
         else if ("LOGIN_WITH_SUCCESS".equals(Protocol.sendLogin(user, Criptografia.criptografar(password)))){
-        login s= new login();
+        login s = null;
+            try {
+                s = new login();
+            } catch (IOException ex) {
+                Logger.getLogger(startpage.class.getName()).log(Level.SEVERE, null, ex);
+            }
         s.setVisible(true);
         JOptionPane.showMessageDialog(startpage.this, " Login With Success ", "Login", JOptionPane.INFORMATION_MESSAGE);
         dispose();

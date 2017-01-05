@@ -6,7 +6,7 @@
 package client_conection;
 import client_bl.*;
 /**
- *
+ *The protocol class of client connection.
  * @author miguel
  */
 public class Protocol {
@@ -15,27 +15,59 @@ public class Protocol {
     private static boolean connected = false;
     
    
-     //O método connect cria um objecto do tipo Sockets. O construtor estabelece a conexão, alterando-se a variável connected para true
+     /**
+      * Disconnecting from server and changing the value of variable connected to false.
+      */
      public static void  disconnect(){
         connected = false;
     }
-    
+    /**
+     * Connecting to server. Creating a new socket and changing the value of variable connected to true.
+     */
     public static void connect(){
         if (!connected)
             sc = new Sockets();
         connected = true;
         System.out.println("Reception");
          }
-
+/**
+ * Checking if the connection is active.
+ * @return True if connected.
+ */
     public static boolean isConnected() {
         return connected;
     }
     
     
-     //O método sendLogin recebe o user e a password encriptada e mete os numa string.  
-     //Envia a string para o server através da função send espera a resposta.
-     
- 
+    
+     /**
+      * Send user board to server.
+      * @param user username
+      * @param boatsxy coordinates of boats 
+      * @return success or not message from server
+      */
+    public static String sendBoard(String user,String boatsxy){
+    
+         connect();
+        String toSend = "Board#"+user+"#"+boatsxy;
+        String receivedReply;
+        System.out.println(toSend);
+        sc.send(toSend);
+                           
+        receivedReply = sc.receive();// you will receive OK or FAILL
+        disconnect();
+        if(receivedReply.equals("Connected2"))
+            return "Connected2";
+        else return "Connected1";
+    
+    }
+    
+ /**
+  * Checking if the user can be connected.
+  * @param user user login
+  * @param password user password
+  * @return success or not message from server
+  */
     public static String sendLogin(String user, String password){
         
        
@@ -52,22 +84,29 @@ public class Protocol {
         disconnect();
         if("clean".equals(receivedReply))
         return "falhou_a_conexao";
+        
         else return receivedReply;
+        
        }
+    
+    /**
+     * Checking if user is already in database.
+     * @param player username
+     * @return true if user hasn't been registered before
+     */
     public static String sendResgister(Player player)
     {
         connect();
-        System.out.print(player.getPassword()+"entrou no sendRegister");
+        
         String toSend = "Register#"+player.getUser()+"#"+player.getFirst_name()+"#"+player.getLast_name()+"#"+player.getPassword()+"#"+player.getEmail()+"#"+player.getRank()+"#"+player.getAge();
-        System.out.println("passou 1");
-        System.out.println(toSend);
-         System.out.println("passou 2");
+        
+        
         
          
          String receivedReply;
-         System.out.println("passou 3");
+        
         System.out.println(toSend);
-         System.out.println("passou 4");
+        
         sc.send(toSend);
                            
         receivedReply = sc.receive(); 
@@ -79,95 +118,74 @@ public class Protocol {
         if("clean".equals(receivedReply))
         return "falhou_a_conexao";
         else return receivedReply;
-    } /*
-    public static String sendBoat1(String coordinates1){
-         connect();
-        String toSend = "Boat1#"+lenght+"#"+coordinates1;
+    } 
+    /**
+     * Join user to the game.
+     * @param username username 
+     * @param boats list of coordinates of boats
+     * @return success if the user is connected to the game.
+     */
+     public static String sendUserToGame(String username, String boats){
+        connect();
+        String toSend = "StartGame#"+username+"#"+boats;
         String receivedReply;
         System.out.println(toSend);
         sc.send(toSend);
                            
         receivedReply = sc.receive();// you will receive OK or FAILL
-        
-        return null;} 
-    
-
-    public static String sendBoat2(String coordinates1, String coordinates2 ){
-       connect();
-        String toSend = "Boat2#"+lenght+"#"+coordinates1"#"+coordinates2;
-        String receivedReply;
-        System.out.println(toSend);
-        sc.send(toSend);
-                   // you will receive OK or FAILL        
-        receivedReply = sc.receive();  
-
-        
-        
-        
-        return null;} 
-    
-    public static String sendBoat3(String coordinates1, String coordinates2, String coordinates3){
-        connect();
-        String toSend = "Boat3#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3;
-        String receivedReply;
-        System.out.println(toSend);
-        sc.send(toSend);
-                   // you will receive OK or FAILL        
-        receivedReply = sc.receive();
-        
-        
-        
-        return null;} 
-    public static String sendBoat4(String coordinates1, String coordinates2, String coordinates3, String coordinates4){
-        connect();
-        String toSend = "Boat4#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3"#"+coordinates4;
-        String receivedReply;
-        System.out.println(toSend);
-        sc.send(toSend);
-            // you will receive OK or FAILL               
-        receivedReply = sc.receive();
-        
-        
-        
-        
-        return null;}
-    public static String sendBoat5(String coordinates1, String coordinates2, String coordinates3, String coordinates4, String coordinates5){
-        connect();
-        String toSend = "Boat5#"+lenght+"#"+coordinates1"#"+coordinates2"#"+coordinates3"#"+coordinates4"#"+coordinates5;
+        disconnect();
+        if(receivedReply.equals("Connected2"))
+            return "Connected2";
+        else return "Connected1";
+       
+     } 
+     
+     
+     /**
+      * Make a shot.
+      * @param playerNumber the username
+      * @param x x coordinate of shot
+      * @param y y coordinate of shot
+      * @return true if the shoot was correct, false if missed
+      */
+     public static Boolean shoot(String playerNumber, Integer x, Integer y){
+          connect();
+        String toSend = "Shoot#"+playerNumber+"#"+x+y;
         String receivedReply;
         System.out.println(toSend);
         sc.send(toSend);
                            
-        receivedReply = sc.receive();
-        // you will receive OK or FAILL
-        
-        
-        
-        return null;
-    } 
-    public static String doShots(){
-        connect();
-        String toSend = "Shot#"+nºmove+"#"+coordinates;
+        receivedReply = sc.receive();// you will receive OK or FAILL
+        disconnect();
+        if(receivedReply.equals("YES")){
+            System.out.println("odpowedz");
+            return true;
+            }else{
+        return false;
+        }
+     }
+     
+     /**
+      * Check if this is the turn of the player.
+      * @param playerNumber username 
+      * @return the name of the player that the turn is.
+      */
+     public static String checkMyTurn(String playerNumber){
+     
+         connect();
+        String toSend = "Turn#"+playerNumber+"#"+"adads";
         String receivedReply;
         System.out.println(toSend);
         sc.send(toSend);
                            
-        receivedReply = sc.receive();
-        //  send the position of shot
-        
-        return null;} 
-    
-    public static String receiveShots(){
-        connect();
-        String toSend = "LastShot#"+nº Move+"#"+coordinates;
-        String receivedReply;
-        System.out.println(toSend);
-        sc.send(toSend);
-                           
-        receivedReply = sc.receive();
-        // received the position of shot on last move
-        
-        
-        return null;}
-*/
+        receivedReply = sc.receive();// you will receive OK or FAILL
+        disconnect();
+        if(receivedReply.equals("player2")){
+            System.out.println("odpowedz");
+            return "player2";}
+        else return "player1";
+     
+     }
 }
+        
+      

@@ -9,7 +9,7 @@ import client_conection.*;
 import java.sql.*;
 
 /**
- *
+ *The class to store temporary information about user.
  * @author miguel
  */
 public class Player {
@@ -20,7 +20,16 @@ public class Player {
     private String email;
     private Integer rank;
     private Integer age;
-    
+    /**
+     * Constructor of the class.
+     * @param user username
+     * @param first_name first name
+     * @param last_name last name
+     * @param password password
+     * @param email email
+     * @param rank ranking
+     * @param age age
+     */
     public Player(String user, String first_name, String last_name, String password, String email, Integer rank, Integer age) {
         this.user = user;
         this.first_name = first_name;
@@ -32,10 +41,13 @@ public class Player {
        
     }
 
-    //Construtor de um objecto da classe player, recebe diferentes parametros referentes ao player 
-      
    
-     
+   
+     /**
+      * Constructor of the class
+      * @param user username
+      * @param password password
+      */
     public Player(String user, String password) {
         this.user = user;
         this.password = Criptografia.criptografar(password);
@@ -90,13 +102,19 @@ public class Player {
     }
 
     
-    
+    /**
+     * Comparing given by user password with the uncoded password got from database
+     * @param pass password given by user.
+     * @return true if passwords are equal.
+     */
     public boolean comparePasswords(String pass){
         return this.password.equals(Criptografia.criptografar(password));
     }
     
-    //*Método vai perguntar ao server se o conjunto do user e password são verdadeiros
-     
+   /**
+    * Checking if the user can be logged in. Comparing login and password.
+    * @return true if username and password are correct.
+    */
     public boolean checkLogin(){
         Protocol.connect();
         String check = Protocol.sendLogin(user, password);
